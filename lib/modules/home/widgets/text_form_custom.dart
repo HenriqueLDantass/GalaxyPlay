@@ -4,17 +4,20 @@ class TextFormFieldCustom extends StatelessWidget {
   final TextEditingController controller;
   final bool icone;
   final String text;
+  final void Function(String)? onChanged;
   const TextFormFieldCustom(
       {super.key,
       required this.controller,
       this.icone = true,
-      required this.text});
+      required this.text,
+      this.onChanged});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: TextFormField(
+        onChanged: onChanged,
         controller: controller,
         decoration: InputDecoration(
           hintText: text,

@@ -24,5 +24,6 @@ class HomeController extends GetxController {
       return card.title.toLowerCase().contains(termo.toLowerCase()) ||
           card.description.toLowerCase().contains(termo.toLowerCase());
     }));
+    update();
   }
 }

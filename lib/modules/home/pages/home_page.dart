@@ -38,10 +38,13 @@ class _HomePageState extends State<HomePage> {
             ),
 
             //pesquisa
-            Obx(() => TextFormFieldCustom(
-                  controller: controller.filterByName,
-                  text: "Digite o topico",
-                )),
+            TextFormFieldCustom(
+              controller: controller.filterByName,
+              text: "Digite o topico",
+              onChanged: (value) {
+                controller.filtrarCards(value);
+              },
+            ),
 
             //titulo + add card
             Row(
