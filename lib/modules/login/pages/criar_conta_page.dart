@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:galaxyplay/core/Auth/repository/auth_reposity.dart';
+import 'package:galaxyplay/core/Auth/controller/auth_controller.dart';
+import 'package:galaxyplay/core/Auth/model/auth_model.dart';
+import 'package:galaxyplay/core/routes/routes.dart';
 import 'package:galaxyplay/modules/login/pages/entrar_page.dart';
+import 'package:get/get.dart';
+import 'package:rive/rive.dart';
 
 class CriarContaPage extends StatefulWidget {
   const CriarContaPage({super.key});
@@ -9,78 +15,157 @@ class CriarContaPage extends StatefulWidget {
 }
 
 class _CriarContaPageState extends State<CriarContaPage> {
+  final controller = Get.find<AuthController>();
+
   final TextEditingController _emailController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nomeController = TextEditingController();
+  final TextEditingController _idadeController = TextEditingController();
 
-  bool _isEmailValid = true;
-
-  bool _isPasswordValid = true;
-
-  void _validateEmail(String email) {
-    setState(() {
-      _isEmailValid = email.isNotEmpty;
-    });
-  }
-
-  void _validatePassword(String password) {
-    setState(() {
-      _isPasswordValid = password.isNotEmpty;
-    });
-  }
-
-  void _login() {
-    if (_isEmailValid && _isPasswordValid) {
-      // Lógica de autenticação
-      // Aqui você pode adicionar a lógica para autenticar o usuário
-      print('E-mail: ${_emailController.text}');
-      print('Senha: ${_passwordController.text}');
-    }
-  }
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login Page'),
+        title: const Text('Criar Usuário'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _emailController,
-              onChanged: _validateEmail,
-              decoration: InputDecoration(
-                labelText: 'E-mail',
-                errorText: _isEmailValid ? null : 'Digite um e-mail válido',
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _passwordController,
-              onChanged: _validatePassword,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Senha',
-                errorText: _isPasswordValid ? null : 'Digite uma senha válida',
-              ),
-            ),
-            const SizedBox(height: 24.0),
-            ElevatedButton(
-              onPressed: _login,
-              child: const Text('Entrar'),
-            ),
-            TextButton(
-                onPressed: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (_) => const EntrarPage()));
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextFormField(
+                controller: _emailController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Erro ao cadastrar o email";
+                  }
+                  return null;
                 },
-                child: const Text("Clique aqui para realizar o login!"))
-          ],
+                decoration: const InputDecoration(
+                  labelText: 'E-mail',
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _passwordController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Erro ao cadastrar o senha";
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Senha',
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _nomeController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Erro ao cadastrar o nome";
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Nome',
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _idadeController,
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Erro ao cadastrar a idade";
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Idade',
+                ),
+              ),
+              const SizedBox(height: 24.0),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _mostrarModal(context);
+                    controller.criarUsuario(
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                        nome: _nomeController.text,
+                        idade: 2);
+                  }
+                },
+                child: const Text('Criar Usuário'),
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  void _mostrarModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+      ),
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 300, // Ajuste o valor conforme necessário
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  "Conta criada com sucesso!",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 30.0),
+                  child: SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: RiveAnimation.network(
+                        "https://public.rive.app/community/runtime-files/1610-3160-check-trade.riv"),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.offNamed(NamedRoutes.signRoute);
+                        },
+                        child: const Text("Login"),
+                      ),
+                      const SizedBox(
+                        width: 30,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: const Text("Fechar"),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

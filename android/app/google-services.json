@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "438945733642",
+    "project_id": "galaxy-79ff2",
+    "storage_bucket": "galaxy-79ff2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438945733642:android:d933b94afacfabb9cb93f3",
+        "android_client_info": {
+          "package_name": "com.example.galaxyplay"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9wOfBgDH2--vAgoAQlJzr-s0Z5uXTUPQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

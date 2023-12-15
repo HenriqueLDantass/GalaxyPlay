@@ -66,7 +66,7 @@ class _DrawerCustomWidgetState extends State<DrawerCustomWidget> {
             },
           ),
           ListTile(
-            title: const Text('School'),
+            title: const Text('Sair'),
             selected: _selectedIndex == 2,
             onTap: () {
               // Update the state of the app

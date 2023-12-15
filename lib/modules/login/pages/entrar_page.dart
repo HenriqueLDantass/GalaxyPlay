@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:galaxyplay/modules/home/pages/home_page.dart';
+import 'package:galaxyplay/core/Auth/controller/auth_controller.dart';
+import 'package:galaxyplay/core/routes/routes.dart';
+import 'package:galaxyplay/modules/login/controller/login_controller.dart';
+import 'package:get/get.dart';
+import 'package:rive/rive.dart';
 
 class EntrarPage extends StatefulWidget {
   const EntrarPage({super.key});
@@ -9,74 +13,129 @@ class EntrarPage extends StatefulWidget {
 }
 
 class _EntrarPageState extends State<EntrarPage> {
-  final TextEditingController _emailController = TextEditingController();
-
-  final TextEditingController _passwordController = TextEditingController();
-
-  bool _isEmailValid = true;
-
-  bool _isPasswordValid = true;
-
-  void _validateEmail(String email) {
-    setState(() {
-      _isEmailValid = email.isNotEmpty;
-    });
-  }
-
-  void _validatePassword(String password) {
-    setState(() {
-      _isPasswordValid = password.isNotEmpty;
-    });
-  }
-
-  void _login() {
-    if (_isEmailValid && _isPasswordValid) {
-      // Lógica de autenticação
-      // Aqui você pode adicionar a lógica para autenticar o usuário
-      print('E-mail: ${_emailController.text}');
-      print('Senha: ${_passwordController.text}');
-
-      Navigator.push(
-          context, MaterialPageRoute(builder: (_) => const HomePage()));
-    }
-  }
+  final _formKey = GlobalKey<FormState>();
+  final controller = Get.find<AuthController>();
+  final controllerUser = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login Page'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _emailController,
-              onChanged: _validateEmail,
-              decoration: InputDecoration(
-                labelText: 'E-mail',
-                errorText: _isEmailValid ? null : 'Digite um e-mail válido',
+      body: Stack(
+        children: [
+          // Imagem ocupando a tela inteira
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/galaxyfundo.jpg',
+              fit: BoxFit.cover,
+            ),
+          ),
+          // Container com bordas arredondadas sobrepondo a metade inferior da imagem
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: MediaQuery.of(context).size.height / 2,
+              decoration: const BoxDecoration(
+                color: Colors.white, // Cor de fundo do container
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0),
+                ),
+              ),
+              // Conteúdo do container aqui
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              icon: const Icon(Icons.arrow_back_ios)),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              "Login",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 30),
+                            ),
+                          )
+                        ]),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: controllerUser.emailController,
+                        decoration: const InputDecoration(
+                          labelText: 'E-mail',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Campo vazio ou incorreto";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                        controller: controllerUser.passwordController,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          labelText: 'Senha',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Campo vazio ou incorreto";
+                          }
+                          return null;
+                        }),
+                    const SizedBox(height: 24.0),
+                    GetX<AuthController>(
+                      builder: (loginController) {
+                        return SizedBox(
+                          width: 250,
+                          height: 50,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                              ),
+                            ),
+                            onPressed: loginController.isloading.value
+                                ? null
+                                : () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      await controller.login(
+                                        email:
+                                            controllerUser.emailController.text,
+                                        password: controllerUser
+                                            .passwordController.text,
+                                      );
+
+                                      Get.toNamed(NamedRoutes.home);
+                                    }
+                                  },
+                            child: loginController.isloading.value
+                                ? const CircularProgressIndicator()
+                                : const Text('Entrar'),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _passwordController,
-              onChanged: _validatePassword,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Senha',
-                errorText: _isPasswordValid ? null : 'Digite uma senha válida',
-              ),
-            ),
-            const SizedBox(height: 24.0),
-            ElevatedButton(
-              onPressed: _login,
-              child: const Text('Entrar'),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

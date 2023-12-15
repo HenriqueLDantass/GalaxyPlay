@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:galaxyplay/modules/login/pages/login_page.dart';
-import 'package:get/get.dart';
 import 'package:rive/rive.dart';
 
 class SplashPage extends StatefulWidget {

@@ -36,6 +36,13 @@ dependencies:
   cupertino_icons: ^1.0.2
   rive: ^0.12.3
   get: ^4.6.6
+  firebase_core: ^2.24.0
+  firebase_auth: ^4.15.0
+  stylish_bottom_bar: ^1.0.3
+  firebase_storage: ^11.5.3
+  cloud_firestore: ^4.13.3
+  image_picker: ^1.0.4
+  youtube_player_flutter: ^8.1.2
 
 dev_dependencies:
   flutter_test:

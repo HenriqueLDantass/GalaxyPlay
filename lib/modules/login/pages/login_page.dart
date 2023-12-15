@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:galaxyplay/modules/login/pages/criar_conta_page.dart';
-import 'package:galaxyplay/modules/login/pages/entrar_page.dart';
+import 'package:galaxyplay/core/routes/routes.dart';
+import 'package:get/route_manager.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -28,8 +28,7 @@ class LoginPage extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (_) => const EntrarPage()));
+                  Get.toNamed(NamedRoutes.signRoute);
                 },
                 child: const Text("Entrar"),
               ),
@@ -42,10 +41,7 @@ class LoginPage extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const CriarContaPage()));
+                  Get.toNamed(NamedRoutes.sigUpRoute);
                 },
                 child: const Text("Criar conta"),
               ),

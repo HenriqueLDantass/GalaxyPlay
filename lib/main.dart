@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:galaxyplay/core/routes/routes.dart';
-import 'package:galaxyplay/modules/home/controller/home_controller.dart';
 import 'package:galaxyplay/modules/home/pages/home_page.dart';
-import 'package:galaxyplay/modules/login/controller/login_controller.dart';
-import 'package:galaxyplay/modules/splash/pages/splash_page.dart';
-import 'package:get/get.dart';
+import 'package:galaxyplay/teste.dart';
 
-void main() {
+import 'package:get/get.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Get.put<HomeController>(HomeController());
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
@@ -22,6 +27,7 @@ class MyApp extends StatelessWidget {
       home: const HomePage(),
       initialRoute: NamedRoutes.splashRoute,
       getPages: AppRoutes.pages,
+      initialBinding: AppBindings(),
     );
   }
 }

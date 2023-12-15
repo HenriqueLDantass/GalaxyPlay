@@ -1,5 +1,5 @@
+import 'package:galaxyplay/core/routes/routes.dart';
 import 'package:galaxyplay/modules/home/controller/home_controller.dart';
-import 'package:galaxyplay/modules/login/pages/login_page.dart';
 import 'package:get/get.dart';
 
 class SplashController extends GetxController {
@@ -9,12 +9,13 @@ class SplashController extends GetxController {
     super.onInit();
     telaLogin();
     Get.put(HomeController());
+    // Get.put(AuthController());
   }
 
   telaLogin() {
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 2), () {
       //alterar nome
-      Get.off(const LoginPage());
+      Get.offNamed(NamedRoutes.loginRouter);
     });
   }
 }
