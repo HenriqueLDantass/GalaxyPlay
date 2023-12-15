@@ -10,6 +10,7 @@ import 'package:galaxyplay/modules/home/widgets/text_form_custom.dart';
 import 'package:galaxyplay/modules/message/pages/message_page.dart';
 import 'package:galaxyplay/modules/home/widgets/topicos_custom.dart';
 import 'package:galaxyplay/modules/message/controller/message_controller.dart';
+import 'package:galaxyplay/modules/message/widgets/title_custom.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -89,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
-                        "Topicos",
+                        "Tópicos",
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
@@ -100,7 +101,7 @@ class _HomePageState extends State<HomePage> {
                           controller.carregarDados(
                               authController.usuarioList.value!.uid);
                         },
-                        child: const Text("+ Add topico"))
+                        child: const Text("+ Add tópico"))
                   ],
                 ),
 
@@ -114,7 +115,10 @@ class _HomePageState extends State<HomePage> {
                         child: controller.cardlist.isEmpty
                             ? const SemCadastro()
                             : controller.isloaging.value
-                                ? const CircularProgressIndicator()
+                                ? const SizedBox(
+                                    height: 100,
+                                    width: 100,
+                                    child: CircularProgressIndicator())
                                 : ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     itemCount: controller.filterCards.isNotEmpty
@@ -179,25 +183,17 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Preencha os campos para adicionar o novo topico!"),
+          title: const Text("Preencha os campos para adicionar o novo tópico!"),
           actions: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: TextField(
-                decoration: const InputDecoration(
-                  hintText: "Titulo do topico",
-                ),
+            TitleCustom(
+                borde: true,
                 controller: controller.nameController,
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
+                titulo: "Título do tópico"),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: TextField(
                 decoration: const InputDecoration(
-                  hintText: "Descrição do topico",
+                  hintText: "Descrição do tópico: *opcional",
                 ),
                 controller: controller.descriptionController,
               ),

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:galaxyplay/modules/home/models/home_model.dart';
+import 'package:galaxyplay/modules/message/models/message_model.dart';
+import 'package:galaxyplay/modules/videoPLay/model/videoplay_model.dart';
 import 'package:get/get.dart';
 
 class MessageController extends GetxController {

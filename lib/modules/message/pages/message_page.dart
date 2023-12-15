@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:galaxyplay/core/routes/routes.dart';
 import 'package:galaxyplay/modules/home/controller/home_controller.dart';
 import 'package:galaxyplay/modules/home/models/home_model.dart';
 import 'package:galaxyplay/modules/message/controller/message_controller.dart';
+import 'package:galaxyplay/modules/message/widgets/title_custom.dart';
 import 'package:galaxyplay/modules/videoPLay/pages/video_play_page.dart';
 import 'package:get/get.dart';
 
@@ -12,6 +14,8 @@ class TopicoItem extends StatelessWidget {
   final String uid;
   TopicoItem(
       {super.key, required this.home, required this.index, required this.uid});
+
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   final messageController = Get.find<MessageController>();
   @override
@@ -61,6 +65,8 @@ class TopicoItem extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (_) => VideoPlayerScreen(
+                                      message: controller.linkObs[linkIndex]
+                                          .messageTopics[0].message,
                                       title:
                                           controller.linkObs[linkIndex].title,
                                       linkVideo: controller.linkObs[linkIndex]
@@ -126,18 +132,24 @@ class TopicoItem extends StatelessWidget {
           contentPadding: const EdgeInsets.only(left: 24, right: 24),
           title: const Text("Adicione itens para o topico"),
           actions: [
-            const Text("Adicione o titulo"),
-            TextField(
-              controller: controller.titulocontroller,
-            ),
-            const Text("Adicione o link"),
-            TextField(
-              controller: controller.linkController,
-            ),
-            const Text("Adicione a mensagem"),
-            TextField(
-              controller: controller.mensagemController,
-            ),
+            Form(
+                key: _key,
+                child: Column(
+                  children: [
+                    TitleCustom(
+                      controller: controller.titulocontroller,
+                      titulo: "Adicione um titulo",
+                    ),
+                    TitleCustom(
+                      controller: controller.linkController,
+                      titulo: "Adicione um link valido do yotube",
+                    ),
+                    TitleCustom(
+                      controller: controller.mensagemController,
+                      titulo: "Adicione uma nota",
+                    ),
+                  ],
+                )),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -147,18 +159,20 @@ class TopicoItem extends StatelessWidget {
                   ),
                   child: const Text('Adicionar Link'),
                   onPressed: () {
-                    messageController.adicionarMensagemAoTopico(
-                        uid,
-                        index,
-                        controller.mensagemController.text,
-                        controller.linkController.text,
-                        controller.titulocontroller.text);
-                    controller.carregarDados(uid);
+                    if (_key.currentState!.validate()) {
+                      messageController.adicionarMensagemAoTopico(
+                          uid,
+                          index,
+                          controller.mensagemController.text,
+                          controller.linkController.text,
+                          controller.titulocontroller.text);
+                      controller.carregarDados(uid);
 
+                      Navigator.of(context).pop();
+                    }
                     controller.mensagemController.clear();
                     controller.linkController.clear();
                     controller.titulocontroller.clear();
-                    Navigator.of(context).pop();
                   },
                 ),
                 TextButton(

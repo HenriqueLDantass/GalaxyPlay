@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:galaxyplay/datasource/remote_datasource.dart';
 import 'package:galaxyplay/modules/home/models/home_model.dart';
+import 'package:galaxyplay/modules/message/models/message_model.dart';
+import 'package:galaxyplay/modules/videoPLay/model/videoplay_model.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -170,7 +171,6 @@ class HomeController extends GetxController {
           'topics': topics,
         });
 
-        // Restante do código de atualização
         await carregarDados(uid);
         filtrarCards(filterByName.text);
         filterCards.assignAll(cardlist);

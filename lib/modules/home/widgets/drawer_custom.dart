@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DrawerCustomWidget extends StatefulWidget {
   const DrawerCustomWidget({super.key});
@@ -71,8 +72,8 @@ class _DrawerCustomWidgetState extends State<DrawerCustomWidget> {
             onTap: () {
               // Update the state of the app
               _onItemTapped(2);
-              // Then close the drawer
-              Navigator.pop(context);
+              Get.back();
+              Get.back();
             },
           ),
         ],

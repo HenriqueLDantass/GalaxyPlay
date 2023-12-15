@@ -5,12 +5,18 @@ class SemCadastro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
-        Text("Nao tem nenhum topico cadastrado"),
-        // Expanded(
-        //   child: Image.asset("assets/images/nada.png"),
-        // ),
+        const SizedBox(
+          height: 30,
+        ),
+        const Text(
+          "Você não possuí nenhum tópico cadastrado!",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        Expanded(
+          child: Image.asset("assets/images/person.png"),
+        ),
       ],
     );
   }

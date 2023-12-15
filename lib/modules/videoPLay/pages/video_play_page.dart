@@ -4,8 +4,13 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 class VideoPlayerScreen extends StatefulWidget {
   final String linkVideo;
   final String title;
+  final String message;
+
   const VideoPlayerScreen(
-      {Key? key, required this.linkVideo, required this.title})
+      {Key? key,
+      required this.linkVideo,
+      required this.title,
+      required this.message})
       : super(key: key);
 
   @override
@@ -43,6 +48,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               title: Text(widget.title),
             ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             constraints: BoxConstraints(
@@ -61,7 +67,22 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           ),
           Visibility(
             visible: !_isFullScreen,
-            child: const Text("Seu Texto aqui"),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Nota: ",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                  Text(
+                    widget.message,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),

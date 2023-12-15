@@ -30,14 +30,27 @@ class TopicosCard extends StatelessWidget {
       width: 180,
       height: 500,
       child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25.0), // Define o border-radius
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft:
+                Radius.circular(10.0), // Raio do canto inferior esquerdo
+            bottomRight:
+                Radius.circular(10.0), // Raio do canto inferior direito
+          ),
         ),
         elevation: 5,
         child: GetBuilder<HomeController>(
           builder: (controller) {
             return Column(
               children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(45),
+                    color: Colors.black,
+                  ),
+                ),
                 controller.imageFile == null
                     ? Container()
                     : Image.file(File(image)),

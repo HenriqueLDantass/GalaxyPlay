@@ -82,18 +82,21 @@ class _EntrarPageState extends State<EntrarPage> {
                       ),
                     ),
                     const SizedBox(height: 16.0),
-                    TextFormField(
-                        controller: controllerUser.passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Senha',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Campo vazio ou incorreto";
-                          }
-                          return null;
-                        }),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                          controller: controllerUser.passwordController,
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            labelText: 'Senha',
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Campo vazio ou incorreto";
+                            }
+                            return null;
+                          }),
+                    ),
                     const SizedBox(height: 24.0),
                     GetX<AuthController>(
                       builder: (loginController) {
@@ -120,8 +123,11 @@ class _EntrarPageState extends State<EntrarPage> {
                                             .passwordController.text,
                                       );
 
+                                      controllerUser.emailController.clear();
+                                      controllerUser.passwordController.clear();
                                       Get.toNamed(NamedRoutes.home);
                                     }
+                                    Focus.of(context).unfocus();
                                   },
                             child: loginController.isloading.value
                                 ? const CircularProgressIndicator()
